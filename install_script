@@ -1,0 +1,48 @@
+!#/bin/bash 
+apt update
+apt install -y --force-yes python3-pip python3.10-venv unzip curl nginx
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+./aws/install
+mkdir app
+aws s3 cp s3://mcgokable-bucket-1/web-app.zip .
+cd app
+unzip ../web-app.zip 
+cp ./nginx/api /etc/nginx/sites-enabled/
+service nginx restart
+pip3 install -r requirements.txt
+python3 main.py
+===================
+#!/bin/bash 
+echo “----------START---------------”
+apt update
+apt install -y unzip
+apt install nginx -y
+apt install curl -y
+echo "_-----------------FIRST_STAGE-------------------"
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip  awscliv2.zip
+./aws/install
+# cd ./home/ubuntu
+echo "------------------------------LS command----------"
+ls /home
+ls /home/ubuntu
+echo "-----------------------------------------CREATE FOLDER----------------"
+mkdir app
+echo "-----------------------------------------COPY APP------------------------------"
+aws s3 cp s3://mcgokable-bucket-1/web-app.zip .
+echo "--------------------------------------------UNZIP app---------------------"
+unzip web-app.zip -d app
+echo "-------------------------------------COPY nginx------------"
+cp ./app/nginx/api /etc/nginx/sites-enabled/
+service nginx restart
+echo “----------before pip3--------------”
+export DEBIAN_FRONTEND=noninteractive
+apt install python3-pip -y
+echo “----------after  pip3--------------”
+pip3 install -r ./app/requirements.txt
+echo "---------------------RUN APP----------------"
+python3 ./app/main.py
+echo "-------------------------------AFTER RUN APP----------------"
+
+echo “-------finish-------------”

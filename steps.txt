@@ -1,0 +1,7 @@
+
+
+1. copy nginx/api to /etc/nginx/sites-enabled/
+2. sudo service nginx restart
+3. python3 main.py
+
+you nedd add profile for ec2-user
