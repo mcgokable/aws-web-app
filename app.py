@@ -119,7 +119,10 @@ def subscribe(email: str, client=Depends(sns_client)):
         ReturnSubscriptionArn=True,
     )
     logger.info("Subscribtion response: %s", response)
-    return {"message": "You are successfully subscribed.", "subscription_arn": response["SubscriptionArn"]}
+    return {
+        "message": "You are successfully subscribed.",
+        "subscription_arn": response["SubscriptionArn"],
+    }
 
 
 def build_message(metadata: str) -> str:
