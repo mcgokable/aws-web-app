@@ -18,6 +18,10 @@ def sns_client():
     return boto3.client("sns", region_name="us-east-1")
 
 
+def lambda_client():
+    return boto3.client("lambda")
+
+
 def get_connection():
     try:
         conn = psycopg2.connect(

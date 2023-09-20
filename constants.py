@@ -5,3 +5,4 @@ BUCKET_NAME = os.getenv("BUCKET_NAME")
 IMAGE_FOLDER = "images"
 SQS_URL = os.getenv("SQS_URL")
 TOPIC_ARN = os.getenv("TOPIC_ARN")
+LAMBDA_VALIDATION_NAME = "PythonWebApp-DataConsistencyFunction"

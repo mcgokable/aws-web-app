@@ -10,8 +10,15 @@ from fastapi import Depends, FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 
-from clients import get_connection, s3_client, sns_client, sqs_client
-from constants import AWS_URL, BUCKET_NAME, IMAGE_FOLDER, SQS_URL, TOPIC_ARN
+from clients import get_connection, s3_client, sns_client, sqs_client, lambda_client
+from constants import (
+    AWS_URL,
+    BUCKET_NAME,
+    IMAGE_FOLDER,
+    SQS_URL,
+    TOPIC_ARN,
+    LAMBDA_VALIDATION_NAME,
+)
 from logger import logger
 
 app = FastAPI()
@@ -123,6 +130,11 @@ def subscribe(email: str, client=Depends(sns_client)):
         "message": "You are successfully subscribed.",
         "subscription_arn": response["SubscriptionArn"],
     }
+
+
+@app.get("/validate")
+def validate(client=Depends(lambda_client)):
+    client.invoke(FunctionName=LAMBDA_VALIDATION_NAME, LogType="Tail")
 
 
 def build_message(metadata: str) -> str:
